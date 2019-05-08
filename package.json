@@ -1,0 +1,22 @@
+{
+  "name": "portmanteau",
+  "version": "0.1.0",
+  "description": "A dependency free word comparison package.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devingprice/portmanteau.git"
+  },
+  "keywords": [
+    "portmanteau"
+  ],
+  "author": "devingprice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devingprice/portmanteau/issues"
+  },
+  "homepage": "https://github.com/devingprice/portmanteau#readme"
+}
