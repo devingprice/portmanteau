@@ -18,4 +18,3 @@ types like "rhyme", "end match beginning", etc
 returns [{
     word1, word2, type of match, (maybe estimated output)
 }]
-
