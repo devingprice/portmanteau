@@ -1,6 +1,6 @@
 // module.exports = (message) => message.toUpperCase();
 const dictionary = require('./cmudict-syllables.json');
-const defaultTypes = ['rhyme'];
+const defaultTypes = ['feminine-rhyme', 'overlap', 'alliteration', 'slant-rhyme', 'consonant-rhyme', 'perfect-rhyme','rich-rhyme','syllabic'];
 
 const portmantaeu = (words1, words2, searchTypes) => {
     [words1, words2, searchTypes] = parseArgs(words1, words2, searchTypes);
