@@ -19,16 +19,24 @@ module.exports = {
         'feminine-rhyme': () => { },
         'overlap': () => { },
         'alliteration': (word) => {
-            //find part before first vowel sound
-            //check if matches
+            // anything ahead of word containing num by using the spaces   .*(?= (?<=^| )(?=[^ ]*\d)[^ ]+)
+            const chunkRegex = /.*?(?= \w*[0-9])/g;
+            const chunk = word.match(chunkRegex)[0];
+            //return new RegExp('.*?(?=.*(?= \\w*[0-9]))\\w*(' + chunk + ')\\w*');
+            //return new RegExp('(?=.*?(?= \\w*[0-9]))('+ chunk + ')')
+            return new RegExp('^('+ chunk + ')')
         },
         'slant-rhyme': () => { },
         'consonant-rhyme': () => { },
         'perfect-rhyme': () => { },
         'rich-rhyme': () => { },
         'syllabic': (word) => {
+            // match any character from end up to - :   (?:-)(.*)$
             //last syllables match
             //return [-1, word.syllables[word.syllables.length -1]]
+            const syllables = word.split('-');
+            const syllable = syllables[ syllables.length -1]
+            return RegExp('('+ syllable + ')$')
         }
     }
 }
