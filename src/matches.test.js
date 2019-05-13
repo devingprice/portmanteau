@@ -16,26 +16,26 @@ describe("Syllabic -> ", () => {
         expect(notMatch).to.be.false;
     })
 
-    it("Test find", () => {
-        const searchParam = matches.query['syllabic'](purple);
-        console.log(searchParam);
-        const array = [quadruple, forget];
+    // it("Test find", () => {
+    //     const searchParam = matches.query['syllabic'](purple);
+    //     console.log(searchParam);
+    //     const array = [quadruple, forget];
         
 
-        for(var i=0; i < array.length; i++){
-            let index = searchParam[0] < 0 ? 
-                array[i].syllables.length + searchParam[0] : 
-                searchParam[0];
-            console.log(array[i].syllables, index)
-            if( array[i].syllables[index] === searchParam[1]){
-                results.push({
-                    word1: purple,
-                    word2: array[i],
-                    type: "syllabic"
-                })
-            }
-        }
-        console.log(results)
-        expect( results.length ).to.equal(1);
-    })
+    //     for(var i=0; i < array.length; i++){
+    //         let index = searchParam[0] < 0 ? 
+    //             array[i].syllables.length + searchParam[0] : 
+    //             searchParam[0];
+    //         console.log(array[i].syllables, index)
+    //         if( array[i].syllables[index] === searchParam[1]){
+    //             results.push({
+    //                 word1: purple,
+    //                 word2: array[i],
+    //                 type: "syllabic"
+    //             })
+    //         }
+    //     }
+    //     console.log(results)
+    //     expect( results.length ).to.equal(1);
+    // })
 })

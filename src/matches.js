@@ -16,8 +16,15 @@ module.exports = {
         }
     },
     query: {
-        'feminine-rhyme': () => { },
-        'overlap': () => { },
+        'feminine-rhyme': () => {
+            //different beginnings but rhymes later syllable
+            //tricky + picky | moaning + groaning
+        },
+        'overlap': () => {
+            // end of word matches beginning of next
+            // t ao r CH ih k | hh aw n D uw m
+            // s k w ET T ah l | aa r K EY N ay n
+        },
         'alliteration': (word) => {
             // anything ahead of word containing num by using the spaces   .*(?= (?<=^| )(?=[^ ]*\d)[^ ]+)
             const chunkRegex = /.*?(?= \w*[0-9])/g;
@@ -26,14 +33,28 @@ module.exports = {
             //return new RegExp('(?=.*?(?= \\w*[0-9]))('+ chunk + ')')
             return new RegExp('^('+ chunk + ')')
         },
-        'slant-rhyme': () => { },
-        'consonant-rhyme': () => { },
-        'perfect-rhyme': () => { },
-        'rich-rhyme': () => { },
+        'slant-rhyme': () => {
+            // near rhyme | rhymes final consonants but not vowels
+        },
+        'consonant-rhyme': () => {
+            // rhymes first consonants but not vowels
+        },
+        'perfect-rhyme': (word) => {
+            // ending sounds match
+            // cat + hat | egg + beg
+            // K AE1 T + HH AE1 T
+            const endOfWordWithVowelReg = /(\w*[0-9])[^0-9]*$/g
+            const endOfWordWithVowel = word.match(endOfWordWithVowelReg)[0];
+            return new RegExp('('+ endOfWordWithVowel +')$');
+        },
+        'rich-rhyme': (word) => {
+            // pronounced the same
+            // raise + raze | break + brake | vary + very
+            return RegExp('(' + word + ')$')
+        },
         'syllabic': (word) => {
             // match any character from end up to - :   (?:-)(.*)$
             //last syllables match
-            //return [-1, word.syllables[word.syllables.length -1]]
             const syllables = word.split('-');
             const syllable = syllables[ syllables.length -1]
             return RegExp('('+ syllable + ')$')
