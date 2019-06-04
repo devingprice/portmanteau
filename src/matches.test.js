@@ -1,6 +1,7 @@
 const chai = require('chai');  // Using Assert style
 const expect = chai.expect;
 
+const dictionary = require('./cmudict-syllables.json');
 const matches = require('./matches');
 
 describe("Syllabic -> ", () => {
@@ -15,27 +16,34 @@ describe("Syllabic -> ", () => {
         const notMatch = matches.verify['syllabic'](purple, forget);
         expect(notMatch).to.be.false;
     })
+})
 
-    // it("Test find", () => {
-    //     const searchParam = matches.query['syllabic'](purple);
-    //     console.log(searchParam);
-    //     const array = [quadruple, forget];
-        
+describe("Rich -> ", () => {
+    // raise "R EY1 Z"  raze | break "B R EY1 K" brake | vary "V EH1","R IY0" very
+    it("Given should match, expect true", () => {
+        const raise = dictionary["RAISE"].join('-');
+        const raiseQuery = matches.query['rich-rhyme'](raise);
+        const raze = dictionary["RAZE"].join('-');
+        const raiseMatchRaze = raiseQuery.test(raze)
+        expect(raiseMatchRaze).to.be.true;
 
-    //     for(var i=0; i < array.length; i++){
-    //         let index = searchParam[0] < 0 ? 
-    //             array[i].syllables.length + searchParam[0] : 
-    //             searchParam[0];
-    //         console.log(array[i].syllables, index)
-    //         if( array[i].syllables[index] === searchParam[1]){
-    //             results.push({
-    //                 word1: purple,
-    //                 word2: array[i],
-    //                 type: "syllabic"
-    //             })
-    //         }
-    //     }
-    //     console.log(results)
-    //     expect( results.length ).to.equal(1);
-    // })
+        const breakW = dictionary["BREAK"].join('-');
+        const breakQuery = matches.query['rich-rhyme'](breakW);
+        const brake = dictionary["BRAKE"].join('-');
+        const breakMatchBrake = breakQuery.test(brake)
+        expect(breakMatchBrake).to.be.true;
+
+        const vary = dictionary["VARY"].join('-');
+        const varyQuery = matches.query['rich-rhyme'](vary);
+        const very = dictionary["VERY"].join('-');
+        const varyMatchVery = varyQuery.test(very)
+        expect(varyMatchVery).to.be.true;
+    })
+    it("Given not match, expect false", () => {
+        const raise = dictionary["RAISE"].join('-');
+        const raiseQuery = matches.query['rich-rhyme'](raise);
+        const brake = dictionary["BRAKE"].join('-');
+        const raiseMatchBrake = raiseQuery.test(brake);
+        expect(raiseMatchBrake).to.be.false;
+    })
 })

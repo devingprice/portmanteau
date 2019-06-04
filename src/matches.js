@@ -19,6 +19,7 @@ module.exports = {
         'feminine-rhyme': () => {
             //different beginnings but rhymes later syllable
             //tricky + picky | moaning + groaning
+            // perfect ryhmes are included
         },
         'overlap': () => {
             // end of word matches beginning of next
@@ -35,9 +36,11 @@ module.exports = {
         },
         'slant-rhyme': () => {
             // near rhyme | rhymes final consonants but not vowels
+            // tip limp, dank bat, bowl home
         },
         'consonant-rhyme': () => {
             // rhymes first consonants but not vowels
+            // bell ball, dump damp
         },
         'perfect-rhyme': (word) => {
             // ending sounds match
