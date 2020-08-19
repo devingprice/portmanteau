@@ -63,4 +63,6 @@ AA2 R-K EY1 N    K EY1-N AY2 N
 'squirt turtle'
 S K W ER1 T    T ER1-T AH0 L
 
+par barbecue = parbecue
+par mitzvah | jurassic par | pardon the interruption
 

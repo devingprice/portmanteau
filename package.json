@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "mocha \"src/**/*.test.js\""
+    "test": "mocha \"src/**/*.test.js\"",
+    "addWord": "node src/add.js"
   },
   "repository": {
     "type": "git",
