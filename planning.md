@@ -1,4 +1,43 @@
-FROM pkmnnames project
+
+TODO
+    make more rhyming types for various formats not covered
+    
+    Make object for rhyming/similar phonemes
+
+    some types will always be another, check in an order then exclude
+
+    change ""+var+"" to `${var}` in matches funcs
+
+    use https://github.com/nlp-compromise/nlp-syllables 
+    to put words together for result
+
+    add async funcs to request word associations
+
+Terms:
+Phoneme = 39 with extra variations for lexical stress
+Not "Pun" = puns are using multiple meanings of a word
+Blend
+Mesh
+lexeme = from same root, run/runs/ran/running
+
+
+
+result [portmanteauObject]
+portmanteauObject {
+    word1, word1pho, word2, word2pho
+    type, overlapped(syllables with overlap), 
+    estimation(of how it is spelled)
+}
+
+
+
+
+
+
+
+
+
+ROM pkmnnames project
 args = {
     array1 not null, array2 optional, types optional
 }
@@ -22,6 +61,33 @@ returns [{
 
 
 
+index:
+portmanteau([word1],?[word2],?[types]) base function
+    returns array of matches
+parseArgs() handles different portmanteau args
+checkForMatches() does the work
+    returns array of matches
+    regs{
+        word (from arr1): [{type, reg:regExp},...]
+    } this is a list of words and what regExp is needed to match that type
+    for each word+query in regs
+    for each regExp needed
+    for each word in array2 check if same word and if passes regExp
+        push it into results
+
+matches:
+_regs = common reg selectors
+verify() check if words match this type
+query() return regExp needed for match
+
+testing: 
+
+
+
+
+
+
+https://en.wikipedia.org/wiki/List_of_portmanteaus
 
 'remember bear ',                          
 R IH0-M EH1 M-B ER0   B EH1 R, 
@@ -66,3 +132,7 @@ S K W ER1 T    T ER1-T AH0 L
 par barbecue = parbecue
 par mitzvah | jurassic par | pardon the interruption
 
+microcomputer software = microsoft
+lion tiger = liger
+America track = amtrack
+Bill hillary = billary

@@ -1,5 +1,6 @@
 const dictionary = require('./cmudict-syllables.json');
 const fs = require('fs');
+const stringify = require("json-stringify-pretty-compact");
 
 function add(first, second){
   let word1 = first.toUpperCase();
@@ -17,20 +18,6 @@ function add(first, second){
   console.log(obj)
   addToJson(obj)
 }
-
-const words = process.argv.slice(2);
-console.log(words);
-
-if(words.length !== 2 ){
-  console.log('Error: doesnt have 2 arguments')
-} else {
-  if(words[0] && words[1]){
-    add(words[0], words[1])
-  } else {
-    console.log('err')
-  }
-}
-
 
 function jsonReader(filePath, cb) {
   fs.readFile(filePath, (err, fileData) => {
@@ -63,7 +50,7 @@ function addToJson(obj){
       currFile.examples.push(obj);
     }
     
-    let jsonString = JSON.stringify(currFile, null, 2);
+    let jsonString = stringify(currFile, null, 2);
 
     fs.writeFile('./bin/examples.json', jsonString, err => {
       if (err) {
@@ -77,3 +64,15 @@ function addToJson(obj){
 
 
 //run with     npm run-script addWord first second
+const words = process.argv.slice(2);
+console.log(words);
+
+if(words.length !== 2 ){
+  console.log('Error: doesnt have 2 arguments')
+} else {
+  if(words[0] && words[1]){
+    add(words[0], words[1])
+  } else {
+    console.log('err')
+  }
+}

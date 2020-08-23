@@ -27,7 +27,7 @@ const checkForMatches = ( array1, array2, types ) =>{
             return {type, reg: matches.query[type]( dictionary[ word ].join('-') ) }
         })
     }
-    console.log(regs)
+    // console.log(regs)
 
     let results = [];
     
@@ -40,7 +40,9 @@ const checkForMatches = ( array1, array2, types ) =>{
 
                     results.push({
                         word1: word,
+                        word1pho: dictionary[word.toUpperCase()],
                         word2: arrayWord,
+                        word2pho: dictionary[arrayWord.toUpperCase()],
                         type: query.type
                     })
                     

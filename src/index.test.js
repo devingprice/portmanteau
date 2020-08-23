@@ -24,7 +24,6 @@ describe("Parse Args -> ", () => {
             args.forEach(arg => expect(arg).to.be.a('string'))
         })
     })
-
 })
 
 describe("Samples -> ", () => {
@@ -37,24 +36,24 @@ describe("Samples -> ", () => {
         expect(res).to.have.lengthOf(1);
     })
     it("Given cat & hat, expect perfect-rhyme match", () => {
-        console.log(dictionary['CAT'], dictionary["HAT"])
+        // console.log(dictionary['CAT'], dictionary["HAT"])
         const res = app.portmantaeu("cat", 'hat', 'perfect-rhyme');
         expect(res).to.have.lengthOf(1);
     })
     it("Given raise & raze, expect rich-rhyme match", () => {
-        console.log(dictionary['RAISE'], dictionary["RAZE"])
+        // console.log(dictionary['RAISE'], dictionary["RAZE"])
         const res = app.portmantaeu("raise", 'raze', 'rich-rhyme');
         expect(res).to.have.lengthOf(1);
     })
 
-    it("Given raise & raze, expect rich-rhyme match", () => {
+    it("Given arrays of previous, expect prior matches", () => {
         const res = app.portmantaeu(
-            ['blue', 'purple', 'cat', "raise"],
-            ['blow', 'quadruple', 'hat', 'raze'],
-            ['alliteration', 'syllabic', 'perfect-rhyme', 'rich-rhyme']
+            ['blue', 'cat', "raise"],
+            ['blow', 'hat', 'raze'],
+            ['alliteration', 'perfect-rhyme', 'rich-rhyme']
         );
-        //syllabic is perfect rhyme & rich rhyme is all
+        // syllabic is perfect rhyme & rich rhyme is all
         console.log( res )
-        expect(res).to.have.lengthOf(9);
+        expect(res).to.have.lengthOf(5);
     })
 })

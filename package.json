@@ -21,7 +21,9 @@
     "url": "https://github.com/devingprice/portmanteau/issues"
   },
   "homepage": "https://github.com/devingprice/portmanteau#readme",
-  "dependencies": {},
+  "dependencies": {
+    "json-stringify-pretty-compact": "^2.0.0"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4"
