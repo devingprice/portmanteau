@@ -1,7 +1,31 @@
 
+Bugs
+    abstruse show is matching
+    overlap needs to get whole phonemes in test (include space)
+        "words": "ABSTRUSE - SHOW",
+        "pro": "AH0 B-S T R UW1 S   |    SH OW1"
+    Alliteration is matching for everything that starts with vowel
+        "words": "OBSCURE - ERUPTING",
+        "pro": "AH0 B-S K Y UH1 R   |    IH0-R AH1 P-T IH0 NG"
+    overlap-vowel
+        "words": "MURKY - DOGGY",
+        "pro": "M ER1-K IY0   |    D AO1-G IY0"
+    syllabic
+        test isn't checking for before term
+        "words": "SHADOWY - PUPPY",
+        "pro": "SH AE1-D OW0-IY0   |    P AH1-P IY0"
+
+matches i liked but got incorrectly
+    shadow doggy = shadowggy
+
 TODO
+    setup db for storing popular search terms (on another project dir)
+    functions to call datamuse api and wordassociations api
+
+    may add (word, loose=false) to queries to replace spaces/dashes/numbers
+
     make more rhyming types for various formats not covered
-    
+
     Make object for rhyming/similar phonemes
 
     some types will always be another, check in an order then exclude
@@ -12,6 +36,42 @@ TODO
     to put words together for result
 
     add async funcs to request word associations
+
+Expansions
+    two words put together equals another
+        just ass = justice (similar vowel)
+        straw bear = strawberr-y (match with extra)
+        show for = chauffer
+        arse skin = asking (similar)
+
+    double word
+        hind_sight = heinz_sight (only a cons replaced)
+
+    double word 
+        noodle arm = nude alarm (direct match if loose)
+
+    only a consonant replaced
+        bicep bisexual
+        B AY2-S EH1 P    B AY2-S EH1 K-SH UW0-AH0 L
+
+    double vowel
+        both vowels match final two vowels
+        helps to have similar number of consonants in between and none after
+        digger, quicker, mixture, disfigure
+    
+    word contained loose similar (maybe too complicated to remove syllables like this)
+        apologies contains paul with similar vowel
+
+        incenerator   IH0 N-S IH1-N ER0-EY2-T ER0
+        roar   R AO1 R
+    
+    assonant contained loose but also with prior, syllabic contained
+        s Ah1 m = s aa1 l m
+    
+    resin resonate (direct contained if loose, multiple syllables)
+
+
+
 
 Terms:
 Phoneme = 39 with extra variations for lexical stress
@@ -48,10 +108,10 @@ args = {
 [word1],'word2'
 
 
-require(portmantaeu)
-const matches = portmantaeu(arr1, arr2, types)
+require(portmanteau)
+const matches = portmanteau(arr1, arr2, types)
 
-FROM portmantaeu
+FROM portmanteau
 needs strings or arrays
 types like "rhyme", "end match beginning", etc
 returns [{
@@ -136,3 +196,11 @@ microcomputer software = microsoft
 lion tiger = liger
 America track = amtrack
 Bill hillary = billary
+
+
+
+
+Links
+https://regexr.com/ 
+https://www.rexegg.com/regex-quickstart.html 
+https://www.regular-expressions.info/lookaround.html

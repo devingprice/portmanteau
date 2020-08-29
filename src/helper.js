@@ -1,125 +1,168 @@
 const dictionary = require('./cmudict-syllables.json');
 const matches = require('./matches');
 
-const camelCased = (string) => string.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-const hypened = (string) => dictionary[string.toUpperCase()].join('-');
-//console.log(hypened('raise'), '|', hypened('raze'), "|| rich-rhyme=",res);
-      
+const camelCased = (string) =>
+    string.replace(/-([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+    });
+const hypened = (string) => {
+    if (dictionary[string.toUpperCase()] === undefined) return undefined;
+    return dictionary[string.toUpperCase()].join('-');
+};
+//console.log(hypened('raise'), '|', hypened('raze'), "|| rich=",res);
+
 const verify = (type, word1, word2, reversable = false) => {
-    if(matches.query[type] !== undefined && word1 !== undefined && word2 !== undefined) {
+    if (
+        matches.query[type] !== undefined &&
+        word1 !== undefined &&
+        word2 !== undefined
+    ) {
         let query = matches.query[type](hypened(word1));
         let res = query.test(hypened(word2));
-        
-        if (!reversable || res) return res; 
+
+        if (!reversable || res) return res;
 
         query = matches.query[type](hypened(word2));
-        res = query.test(hypened(word1)); 
+        res = query.test(hypened(word1));
         return res;
     }
+};
+
+//need to go through more and test as well
+const hierarchy = {
+    rich: ['syllabic', 'perfect', 'assonant', 'near', 'alliteration'],
+    syllabic: ['perfect', 'assonant', 'near'],
+    perfect: ['near', 'assonant'],
+    'feminine-rhyme': ['perfect', 'assonant', 'near'],
+};
+
+function order(arr) {
+    //takes a list of query types
+    //orders by hierarchy
+    //needs way to tell not to do certain ones if parent fails
 }
 
-const hierarchy = {
-    
-};
 // for now, if types contains rich+syllabic+perfect+assonant+near, condense into rich
 // later, might test in certain order and exclude tests that aren't needed
 
-//if rich rhyme then it is syllablic
+//if rich then it is syllablic
 //  if syllabic then it is perfect-rhyme
 //      if perfect-rhyme then it is assonant
 //      if perfect-rhyme then it is near-rhyme
-//if rich-rhyme then it is feminine
+//if rich then it is feminine
 //  if feminine then it is perfect /near/assonant
 //todo
 
 const descriptions = {
-    'assonant': "last vowel matches and consonants contained",
-    'feminine-rhyme': "first vowel to end matches",
-    'overlap-single': "last phoneme of word matches first phoneme of next word",
-    'overlap-vowel': "todo",
-    'alliteration': "consonants before first vowel match",
-    'near-rhyme': "consonants after last vowel match",
-    'consonant-rhyme': "all but first vowel matches",
-    'perfect-rhyme': "last vowel to end matches",
-    'rich-rhyme': "pronunciation identical",
-    'syllabic': "last syllable matches",
-    'oblique': "todo"
-}
+    assonant: 'last vowel',
+    assonantContained: 'last vowel matches and consonants contained',
+    'feminine-rhyme': 'first vowel to end, two syllables',
+    'overlap-single': 'last phoneme of word matches first phoneme of next word',
+    'overlap-vowel': 'last vowel to end overlaps new word first vowel',
+    alliteration: 'consonants before first vowel',
+    'near-rhyme': 'consonants after last vowel',
+    'consonant-rhyme': 'all but first vowel',
+    'perfect-rhyme': 'last vowel to end',
+    rich: 'pronunciation identical',
+    syllabic: 'last syllable',
+    'syllabic-overlap': 'last syllable matches first syllable of next',
+    oblique: 'todo',
+    similar:
+        'similar sounding vowel consonants on last vowel to end match (er = eh r)',
+    'similar-overlap': 'last syllable similar matches first syllable of next word',
+    //todo perfect is last vowel to end, feminines is 2 vowels, may want to test for 3
+};
 
 const formats = {
-    'assonant': [""],
-    'feminine-rhyme': [""],
-    'overlap-single': "non direct match: d a D = D a d | d a d-d a D = D a d-d a d",
-    'overlap-vowel': "non direct match todo",
-    'alliteration': ["D a d", "D a d-d a d", "D a d-d a d-d a d"],
-    'near-rhyme': [""],
-    'consonant-rhyme': [""],
-    'perfect-rhyme': ["d A D", "d a d-d A D", "d a d-d a d-d A D"],
-    'rich-rhyme': ["D A D", "D A D-D A D", "D A D-D A D-D A D"],
-    'syllabic': [""],
-    'oblique': [""]
-}
+    //"d a d", "d a d-d a d", "d a d-d a d-d a d"
+    assonant: ['d A d', 'd a d-d A d', 'd a d-d a d-d A d'],
+    assonantContained: ['d A * D *'],
+    'feminine-rhyme': ['d A D-D A D', 'd a d-d A D-D A D'],
+    'overlap-single': 'non direct match: d a D = D a d | d a d-d a D = D a d-d a d',
+    'overlap-vowel': 'non direct match todo',
+    alliteration: ['D a d', 'D a d-d a d', 'D a d-d a d-d a d'],
+    'near-rhyme': [''],
+    'consonant-rhyme': [''],
+    'perfect-rhyme': ['d A D', 'd a d-d A D', 'd a d-d a d-d A D'],
+    rich: ['D A D', 'D A D-D A D', 'D A D-D A D-D A D'],
+    syllabic: ['D A D', 'd a d-D A D', 'd a d-d a d-D A D'],
+    oblique: [''],
+};
 
-//#region 
+//#region
 //dont know if I can get another rhyme to catch these
-const closeEnough = {
-    'B ER0': ['B EH1 R'],
-    'B EH1 R': ['B ER0']
-    //burr B ER1
-    //so B ER# = B EH# R
-    // order dare = A01 R-D ER# | D EH# R
-}
+// const closeEnough = {
+//     'B ER0': ['B EH1 R'],
+//     'B EH1 R': ['B ER0']
+//burr B ER1
+//so B ER# = B EH# R
+// order dare = A01 R-D ER# | D EH# R
+// }
+// 'B ER0' 'B EH1 R' 'B ER1'
 
-function addCloseEnough(str1, str2){
-    if(closeEnough[str1] && typeof closeEnough[str1] === 'array'){
-        if(closeEnough[str1].indexOf(str2) !== -1){
-            closeEnough[str1].push(str2)
-        }
-    }
-    if(closeEnough[str2] && typeof closeEnough[str2] === 'array'){
-        if(closeEnough[str2].indexOf(str1) !== -1){
-            closeEnough[str2].push(str1)
-        }
-    }
-}
+// function addCloseEnough(str1, str2) {
+//     if (closeEnough[str1] && typeof closeEnough[str1] === 'array') {
+//         if (closeEnough[str1].indexOf(str2) !== -1) {
+//             closeEnough[str1].push(str2);
+//         }
+//     }
+//     if (closeEnough[str2] && typeof closeEnough[str2] === 'array') {
+//         if (closeEnough[str2].indexOf(str1) !== -1) {
+//             closeEnough[str2].push(str1);
+//         }
+//     }
+// }
 
-function checkForCloseEnough(str){
-    if(closeEnough[str] && typeof closeEnough[str] === 'array'){
-        return closeEnough[str]
-    }
-    return null;
-}
+// function checkForCloseEnough(str) {
+//     if (closeEnough[str] && typeof closeEnough[str] === 'array') {
+//         return closeEnough[str];
+//     }
+//     return null;
+// }
 //#endregion
 
-function testAllQueries(word1, word2){
+function testAllQueries(word1, word2) {
     let somethingMatched = false;
     let types = [];
-    for (const [key,value] of Object.entries(matches.query)){
+    for (const [key, value] of Object.entries(matches.query)) {
         let query = value(hypened(word1));
         let res = query.test(hypened(word2));
         if (res === true) {
-            somethingMatched = true
-            types.push(`${key} ${word1} ${word2}`)
-        };
+            somethingMatched = true;
+            types.push(`${key} ${word1} ${word2}`);
+        }
 
         query = value(hypened(word2));
-        res = query.test(hypened(word1))
+        res = query.test(hypened(word1));
         if (res === true) {
             somethingMatched = true;
-            types.push(`${key} ${word2} ${word1}`)
+            types.push(`${key} ${word2} ${word1}`);
         }
     }
     // console.log(types)
     return {
         matched: somethingMatched,
-        types
-    }
+        types,
+    };
+}
+
+function logChunk(str) {
+    let lines = str.split(';');
+    lines.forEach((line) => {
+        let words = line.replace('\n', '').split(' ');
+        console.log(words);
+        let hW = words.map((word) => hypened(word));
+        console.log(hW.join('     '));
+    });
 }
 
 module.exports = {
-    camelCased, hypened, testAllQueries, verify
-}
-
+    camelCased,
+    hypened,
+    testAllQueries,
+    verify,
+    logChunk,
+};
 
 /* https://examples.yourdictionary.com/examples-of-rhyme.html 
 http://www.literarydevices.com/dactyl/
